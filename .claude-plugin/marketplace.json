@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "gen-html-slides",
+  "description": "Create stunning, animation-rich HTML presentations from scratch or by converting PowerPoint files.",
+  "owner": {
+    "name": "Adamatoma",
+    "url": "https://github.com/Adamatoma"
+  },
+  "plugins": [
+    {
+      "name": "gen-html-slides",
+      "description": "Zero-dependency HTML presentation generator with 12 curated visual themes, PPT conversion, and anti-AI-slop design philosophy.",
+      "source": "./skills/gen-html-slides",
+      "category": "productivity",
+      "tags": ["presentations", "slides", "html", "design", "powerpoint"]
+    }
+  ]
+}
