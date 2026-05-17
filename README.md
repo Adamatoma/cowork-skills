@@ -2,8 +2,6 @@
 
 基于工作需要 & 实践，验证过的好用 Claude Code skill 合集。
 
-> Follow me on X: [@YutongPan3495](https://x.com/YutongPan3495)
-
 ## Installation
 
 所有 skill 共享同一个插件市场入口，一次添加，按需安装：
@@ -49,6 +47,12 @@
 
 ---
 
+## Credits
+
+Inspired by the "Vibe Coding" philosophy — building beautiful things without being a traditional software engineer.
+
+> Follow me on X: [@YutongPan3495](https://x.com/YutongPan3495)
+
 ## License
 
-MIT
+MIT — Use it, modify it, share it.
