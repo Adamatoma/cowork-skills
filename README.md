@@ -26,7 +26,7 @@ Install directly from Claude Code in two commands:
 
 ```bash
 /plugin marketplace add Adamatoma/cowork-skills
-/plugin install gen-html-slides@gen-html-slides
+/plugin install gen-html-slides@cowork-skills
 ```
 
 Then use it by typing `/gen-html-slides` in Claude Code.

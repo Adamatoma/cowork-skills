@@ -1,7 +1,8 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "gen-html-slides",
-  "description": "Create stunning, animation-rich HTML presentations from scratch or by converting PowerPoint files.",
+  "name": "cowork-skills",
+  "id": "cowork-skills",
+  "description": "A collection of Claude Code skills for development and presentation workflows.",
   "owner": {
     "name": "Adamatoma",
     "url": "https://github.com/Adamatoma"
@@ -13,6 +14,13 @@
       "source": "./skills/gen-html-slides",
       "category": "productivity",
       "tags": ["presentations", "slides", "html", "design", "powerpoint"]
+    },
+    {
+      "name": "coding-basic-rules",
+      "description": "12 foundational engineering discipline rules for Claude Code. Covers thinking before coding, simplicity, surgical changes, goal-driven execution, token budgets, conflict surfacing, test intent, checkpointing, and failing loud.",
+      "source": "./skills/coding-basic-rules",
+      "category": "workflow",
+      "tags": ["rules", "coding", "best-practices", "discipline", "engineering"]
     }
   ]
 }
