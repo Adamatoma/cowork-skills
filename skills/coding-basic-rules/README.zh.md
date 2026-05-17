@@ -16,6 +16,8 @@ LLM 编程助手有一套共通的失效模式：
 
 这些不是模型缺陷——而是行为默认值。规则可以覆盖它们。
 
+![coding-basic-rules demo](../../demo/coding-basic-rules/gif-coding-basic-rules.gif)
+
 ---
 
 ## 解决方案

@@ -16,6 +16,8 @@ LLMs coding assistants share a common set of failure modes:
 
 These aren't model failures — they're behavioral defaults. Rules can override them.
 
+![coding-basic-rules demo](../../demo/coding-basic-rules/gif-coding-basic-rules.gif)
+
 ---
 
 ## The Solution

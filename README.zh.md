@@ -20,6 +20,10 @@
 
 从零创建或将 PowerPoint 转换为动效丰富的 HTML 演示文稿。无需设计能力，通过可视化预览选风格，生成零依赖的单 HTML 文件。
 
+![gen-html-slides demo](./demo/gen-html-slides/gen-html-slides-demo.gif)
+
+![style selection](./demo/gen-html-slides/gif-style.gif)
+
 **核心能力：**
 - 零依赖 — 纯 HTML/CSS/JS，无需 npm 或构建工具
 - 视觉风格探索 — 生成 3 个预览让你直接选，而非描述偏好
@@ -35,6 +39,8 @@
 ### [coding-basic-rules](./skills/coding-basic-rules/README.md)
 
 12 条工程纪律规则，约束 Claude Code 在编码任务中的行为默认值。改编自经过实践验证的 LLM 编程规范。
+
+![coding-basic-rules demo](./demo/coding-basic-rules/gif-coding-basic-rules.gif)
 
 **核心能力：**
 - 编码前思考，显式说明假设，不默默猜测

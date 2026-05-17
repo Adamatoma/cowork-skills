@@ -20,6 +20,10 @@ All skills share a single marketplace entry — add once, install on demand:
 
 Create stunning, animation-rich HTML presentations from scratch or by converting PowerPoint files. No design experience needed — pick your style from visual previews. Outputs a single, zero-dependency HTML file.
 
+![gen-html-slides demo](./demo/gen-html-slides/gen-html-slides-demo.gif)
+
+![style selection](./demo/gen-html-slides/gif-style.gif)
+
 **Key Features:**
 - Zero dependencies — pure HTML/CSS/JS, no npm or build tools required
 - Visual style exploration — choose from 3 generated previews instead of describing preferences
@@ -35,6 +39,8 @@ Create stunning, animation-rich HTML presentations from scratch or by converting
 ### [coding-basic-rules](./skills/coding-basic-rules/README.md)
 
 12 engineering discipline rules that constrain Claude Code's default behavior during coding tasks. Adapted from battle-tested LLM coding guidelines.
+
+![coding-basic-rules demo](./demo/coding-basic-rules/gif-coding-basic-rules.gif)
 
 **Key Features:**
 - Think before coding — state assumptions explicitly, never guess silently

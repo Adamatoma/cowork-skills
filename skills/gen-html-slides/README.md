@@ -10,6 +10,10 @@ Here is a deck about the skill, made through the skill:
 
 https://github.com/user-attachments/assets/ef57333e-f879-432a-afb9-180388982478
 
+![gen-html-slides demo](../../demo/gen-html-slides/gen-html-slides-demo.gif)
+
+![style selection](../../demo/gen-html-slides/gif-style.gif)
+
 ### Key Features
 
 - **Zero Dependencies** — Single HTML files with inline CSS/JS. No npm, no build tools, no frameworks.
