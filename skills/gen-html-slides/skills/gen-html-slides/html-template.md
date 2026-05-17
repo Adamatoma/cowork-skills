@@ -192,6 +192,8 @@ Every presentation must include:
 
 **If the user chose "No" for inline editing in Phase 1, do NOT generate any edit-related HTML, CSS, or JS.**
 
+**IMPORTANT — Language consistency:** All Inline Editor UI strings (button label, banner text, keyboard hint in `title` attribute) **must match the presentation's language**. The templates below use English defaults; a translation table is provided at the end of this section.
+
 **Do NOT use CSS `~` sibling selector for hover-based show/hide.** The CSS-only approach (`edit-hotzone:hover ~ .edit-toggle`) fails because `pointer-events: none` on the toggle button breaks the hover chain: user hovers hotzone -> button becomes visible -> mouse moves toward button -> leaves hotzone -> button disappears before click.
 
 **Required approach: JS-based hover with 400ms delay timeout.**
@@ -317,6 +319,38 @@ exportFile() {
 }
 ```
 
+---
+
+### Inline Editor — Localizable UI Strings
+
+When implementing `toggleEditMode()`, use these strings — **localized to the presentation's language**:
+
+**English (default):**
+```javascript
+// Button title attribute (HTML)
+title="Edit mode (E)"
+
+// toggleEditMode() — entering edit mode
+editToggle.textContent = '✏️ Done';          // button label while active
+editBanner.textContent = '✏️ Edit Mode — click any text · Ctrl+S to save';
+
+// toggleEditMode() — leaving edit mode
+editToggle.textContent = '✏️ Edit';          // button label while inactive
+```
+
+**Chinese equivalents** (use when the presentation language is Chinese):
+```javascript
+title="编辑模式 (E)"
+
+editToggle.textContent = '✏️ 完成';
+editBanner.textContent = '✏️ 编辑模式 — 点击文字编辑 · Ctrl+S 保存';
+
+editToggle.textContent = '✏️ 编辑';
+```
+
+**Rule:** Detect the presentation language from `<html lang="...">` or from the content language, and apply the matching set of strings above.
+
+---
 
 ## Image Manager (Opt-In Only)
 
@@ -325,8 +359,10 @@ exportFile() {
 This feature lets users upload and place images directly in the browser — no HTML editing required. Images are base64-encoded via FileReader, keeping the single HTML file fully portable.
 
 Two modes are available through a two-tab panel:
-- **添加图片 tab** — upload an image, choose "自由浮动" (absolute overlay) or "融入布局" (merge into a structured layout slot)
-- **幻灯片布局 tab** — apply a layout preset to the slide (text+image split), upload a slot image, and drag the divider to adjust proportions
+- **Add Image tab** — upload an image, choose freeform overlay or merge into a structured layout slot
+- **Slide Layout tab** — apply a layout preset to the slide (text+image split), upload a slot image, and drag the divider to adjust proportions
+
+**IMPORTANT — Language consistency:** All Image Manager UI strings (tab labels, button text, placeholders, PRESETS labels, size names) **must match the presentation's language**. If the presentation is in English, use English. If Chinese, use Chinese. The templates below use English; a translation table is provided at the end of this section.
 
 **If BOTH inline editing AND image manager are enabled:** update `exportFile()` to deselect managed images before capturing outerHTML:
 
@@ -537,20 +573,20 @@ Add just before `</body>`:
 
 ```html
 <!-- Image Manager trigger button -->
-<button class="img-mgr-btn" id="imgMgrBtn" title="图片与排版 (I)">🖼</button>
+<button class="img-mgr-btn" id="imgMgrBtn" title="Images &amp; Layout (I)">🖼</button>
 
 <!-- Image Manager overlay + panel -->
 <div class="img-mgr-overlay" id="imgMgrOverlay">
-  <div class="img-mgr-panel" role="dialog" aria-label="图片管理器">
+  <div class="img-mgr-panel" role="dialog" aria-label="Image Manager">
     <div class="img-mgr-header">
-      <h3>图片与排版</h3>
-      <button class="img-mgr-close" id="imgMgrClose" aria-label="关闭">×</button>
+      <h3>Images &amp; Layout</h3>
+      <button class="img-mgr-close" id="imgMgrClose" aria-label="Close">×</button>
     </div>
 
     <!-- Tabs -->
     <div class="panel-tabs">
-      <button class="panel-tab active" data-tab="add">添加图片</button>
-      <button class="panel-tab" data-tab="layout">幻灯片布局</button>
+      <button class="panel-tab active" data-tab="add">Add Image</button>
+      <button class="panel-tab" data-tab="layout">Slide Layout</button>
     </div>
 
     <!-- Tab 1: Add Image -->
@@ -559,58 +595,58 @@ Add just before `</body>`:
         <input type="file" id="imgFileInput" accept="image/*" style="display:none">
         <div class="upload-prompt">
           <span class="upload-icon">📁</span>
-          <span>点击或拖入图片</span>
+          <span>Click or drag an image</span>
           <span class="upload-hint">PNG · JPG · GIF · WebP · SVG</span>
         </div>
-        <img id="imgPreviewEl" class="img-preview-thumb" style="display:none" alt="预览">
+        <img id="imgPreviewEl" class="img-preview-thumb" style="display:none" alt="preview">
       </label>
       <div class="img-field">
-        <label for="imgSlideSelect">目标幻灯片</label>
+        <label for="imgSlideSelect">Target Slide</label>
         <select id="imgSlideSelect"></select>
       </div>
       <!-- Mode toggle: freeform overlay vs merge into layout slot -->
       <div class="mode-toggle">
-        <button class="mode-btn active" data-mode="freeform">自由浮动</button>
-        <button class="mode-btn" data-mode="merge">融入布局</button>
+        <button class="mode-btn active" data-mode="freeform">Free Float</button>
+        <button class="mode-btn" data-mode="merge">Merge Layout</button>
       </div>
       <!-- Freeform options -->
       <div class="add-mode-section" id="addModeFreeform">
         <div class="img-field">
-          <label>位置</label>
+          <label>Position</label>
           <div class="layout-grid">
             <button class="layout-btn active" data-layout="auto">Auto</button>
-            <button class="layout-btn" data-layout="right">右侧 ▶</button>
-            <button class="layout-btn" data-layout="left">◀ 左侧</button>
-            <button class="layout-btn" data-layout="bottom">底部</button>
-            <button class="layout-btn" data-layout="center">居中</button>
-            <button class="layout-btn" data-layout="background">背景</button>
+            <button class="layout-btn" data-layout="right">Right ▶</button>
+            <button class="layout-btn" data-layout="left">◀ Left</button>
+            <button class="layout-btn" data-layout="bottom">Bottom</button>
+            <button class="layout-btn" data-layout="center">Center</button>
+            <button class="layout-btn" data-layout="background">BG</button>
           </div>
         </div>
         <div class="img-field">
-          <label for="imgSizeRange">大小 — <span id="imgSizeLabel">中等</span></label>
+          <label for="imgSizeRange">Size — <span id="imgSizeLabel">Medium</span></label>
           <input type="range" id="imgSizeRange" min="15" max="85" value="40">
         </div>
       </div>
       <!-- Merge-into-layout options -->
       <div class="add-mode-section" id="addModeMerge" style="display:none">
         <div class="img-field">
-          <label>布局方式</label>
+          <label>Layout Style</label>
           <div class="preset-grid" id="addPresetGrid">
             <!-- populated by JS: all PRESETS except text-only -->
           </div>
         </div>
       </div>
-      <button class="img-add-confirm" id="imgAddConfirm" disabled>添加图片</button>
+      <button class="img-add-confirm" id="imgAddConfirm" disabled>Add Image</button>
     </div>
 
     <!-- Tab 2: Slide Layout -->
     <div class="panel-pane" id="pane-layout">
       <div class="img-field">
-        <label for="layoutSlideSelect">目标幻灯片</label>
+        <label for="layoutSlideSelect">Target Slide</label>
         <select id="layoutSlideSelect"></select>
       </div>
       <div class="img-field">
-        <label>布局预设</label>
+        <label>Layout Preset</label>
         <div class="preset-grid" id="presetGrid">
           <!-- populated by JS: all PRESETS including text-only -->
         </div>
@@ -619,16 +655,16 @@ Add just before `</body>`:
         <input type="file" id="slotFileInput" accept="image/*" style="display:none">
         <div class="upload-prompt" style="gap:.25rem">
           <span style="font-size:1.4rem">🖼</span>
-          <span style="font-size:.8rem">为布局槽上传图片</span>
+          <span style="font-size:.8rem">Upload layout slot image</span>
         </div>
-        <img id="slotPreviewEl" class="img-preview-thumb" style="display:none;max-height:80px" alt="预览">
+        <img id="slotPreviewEl" class="img-preview-thumb" style="display:none;max-height:80px" alt="preview">
       </label>
-      <p class="panel-info">布局预设将文字与图片以固定比例排列。图片进入「布局槽」后仍可替换；自由浮动图片互不影响。</p>
-      <button class="img-add-confirm" id="applyLayoutBtn">应用布局</button>
+      <p class="panel-info">Layout presets arrange text and image at a fixed ratio. Slot images can be replaced; freeform images are independent.</p>
+      <button class="img-add-confirm" id="applyLayoutBtn">Apply Layout</button>
     </div>
 
     <hr class="divider">
-    <button class="img-save-btn" id="imgSaveBtn">💾 保存 HTML（含所有图片）</button>
+    <button class="img-save-btn" id="imgSaveBtn">💾 Save HTML (with all images)</button>
   </div>
 </div>
 ```
@@ -651,13 +687,14 @@ class ImageManager {
     this.addMergePreset = 'lyt-ti'; // default preset for merge mode
 
     // Layout preset definitions — id:null means text-only (no image slot)
+    // Labels use the presentation's language (see translation table at end of section)
     this.PRESETS = [
-      { id: null,       label: '纯文字',  thumb: { texts:[{x:2,y:2,w:44,h:26}], imgs:[] } },
-      { id: 'lyt-ti',   label: '文 | 图', thumb: { texts:[{x:2,y:2,w:24,h:26}], imgs:[{x:28,y:2,w:18,h:26}] } },
-      { id: 'lyt-it',   label: '图 | 文', thumb: { texts:[{x:26,y:2,w:20,h:26}], imgs:[{x:2,y:2,w:20,h:26}] } },
-      { id: 'lyt-tb',   label: '文 / 图', thumb: { texts:[{x:2,y:2,w:44,h:12}], imgs:[{x:2,y:16,w:44,h:12}] } },
-      { id: 'lyt-bt',   label: '图 / 文', thumb: { texts:[{x:2,y:16,w:44,h:12}], imgs:[{x:2,y:2,w:44,h:12}] } },
-      { id: 'lyt-full', label: '满屏图',  thumb: { texts:[{x:2,y:18,w:44,h:10}], imgs:[{x:0,y:0,w:48,h:30}] } },
+      { id: null,       label: 'Text only', thumb: { texts:[{x:2,y:2,w:44,h:26}], imgs:[] } },
+      { id: 'lyt-ti',   label: 'Text | Img', thumb: { texts:[{x:2,y:2,w:24,h:26}], imgs:[{x:28,y:2,w:18,h:26}] } },
+      { id: 'lyt-it',   label: 'Img | Text', thumb: { texts:[{x:26,y:2,w:20,h:26}], imgs:[{x:2,y:2,w:20,h:26}] } },
+      { id: 'lyt-tb',   label: 'Text / Img', thumb: { texts:[{x:2,y:2,w:44,h:12}], imgs:[{x:2,y:16,w:44,h:12}] } },
+      { id: 'lyt-bt',   label: 'Img / Text', thumb: { texts:[{x:2,y:16,w:44,h:12}], imgs:[{x:2,y:2,w:44,h:12}] } },
+      { id: 'lyt-full', label: 'Full Img',   thumb: { texts:[{x:2,y:18,w:44,h:10}], imgs:[{x:0,y:0,w:48,h:30}] } },
     ];
 
     this._buildPresetGrids();
@@ -767,8 +804,8 @@ class ImageManager {
       });
     });
 
-    // Size label
-    const sizeNames = ['极小','小','中等','大','满屏'];
+    // Size label — use language-appropriate names (see translation table at end of section)
+    const sizeNames = ['XS','S','M','L','XL'];
     const sizeLabelMap = [15, 30, 50, 65, 85];
     document.getElementById('imgSizeRange').addEventListener('input', e => {
       const v = parseInt(e.target.value);
@@ -1090,7 +1127,7 @@ class ImageManager {
   _setSlotPlaceholder(slot) {
     slot.innerHTML = '';
     const ph = document.createElement('div'); ph.className = 'img-slot-placeholder';
-    ph.innerHTML = '<span class="slot-icon">📷</span><span>点此上传布局图片</span>';
+    ph.innerHTML = '<span class="slot-icon">📷</span><span>Click to upload layout image</span>';
     ph.addEventListener('click', () => {
       document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.panel-pane').forEach(p => p.classList.remove('active'));
@@ -1169,7 +1206,39 @@ const imgManager = new ImageManager(presentation);
 
 ---
 
-## Image Pipeline (Skip If No Images)
+### Image Manager — Chinese Translation Table
+
+When generating a **Chinese** presentation, replace the English strings above with these equivalents:
+
+| English (default) | Chinese |
+|---|---|
+| `Images & Layout` (panel title) | `图片与排版` |
+| `Image Manager` (aria-label) | `图片管理器` |
+| `Close` (aria-label) | `关闭` |
+| `Add Image` (tab) | `添加图片` |
+| `Slide Layout` (tab) | `幻灯片布局` |
+| `Click or drag an image` | `点击或拖入图片` |
+| `preview` (alt) | `预览` |
+| `Target Slide` | `目标幻灯片` |
+| `Free Float` | `自由浮动` |
+| `Merge Layout` | `融入布局` |
+| `Position` | `位置` |
+| `Right ▶` | `右侧 ▶` |
+| `◀ Left` | `◀ 左侧` |
+| `Bottom` | `底部` |
+| `Center` | `居中` |
+| `BG` | `背景` |
+| `Size —` | `大小 —` |
+| `Layout Style` | `布局方式` |
+| `Add Image` (confirm button) | `添加图片` |
+| `Upload layout slot image` | `为布局槽上传图片` |
+| `Layout presets arrange…` (info) | `布局预设将文字与图片以固定比例排列。图片进入「布局槽」后仍可替换；自由浮动图片互不影响。` |
+| `Apply Layout` | `应用布局` |
+| `💾 Save HTML (with all images)` | `💾 保存 HTML（含所有图片）` |
+| `Click to upload layout image` | `点此上传布局图片` |
+| PRESETS labels: `Text only / Text \| Img / Img \| Text / Text / Img / Img / Text / Full Img` | `纯文字 / 文 \| 图 / 图 \| 文 / 文 / 图 / 图 / 文 / 满屏图` |
+| Size names: `XS / S / M / L / XL` | `极小 / 小 / 中等 / 大 / 满屏` |
+| `Images & Layout (I)` (button title) | `图片与排版 (I)` |
 
 If user chose "No images" in Phase 1, skip this entirely. If images were provided, process them before generating HTML.
 
