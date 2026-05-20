@@ -1,87 +1,86 @@
-# 安装与认证
+# Installation & Authentication
 
-## 安装 lark-cli
+## Install lark-cli
 
 ```bash
-# ⚠️ npx 安装方式在 Node.js v22+ 会报 ERR_REQUIRE_ESM 错误，改用直接下载二进制：
+# ⚠️ The npx install method throws ERR_REQUIRE_ESM on Node.js v22+. Use direct binary download instead:
 
-# 1. 查询最新版本
+# 1. Check the latest version
 curl -s https://api.github.com/repos/larksuite/cli/releases/latest | python3 -c "import json,sys; print(json.load(sys.stdin)['tag_name'])"
 
-# 2. macOS arm64（M 系列芯片）下载
+# 2. Download for macOS arm64 (Apple Silicon / M-series)
 curl -L -o /tmp/lark-cli.tar.gz https://github.com/larksuite/cli/releases/download/v1.0.34/lark-cli-1.0.34-darwin-arm64.tar.gz
 tar -xzf /tmp/lark-cli.tar.gz -C /tmp/
 
-# 3. 安装到用户目录（无需 sudo）
+# 3. Install to user directory (no sudo required)
 mkdir -p ~/bin && cp /tmp/lark-cli ~/bin/lark-cli && chmod +x ~/bin/lark-cli
 
-# 4. 加入 PATH（写入 ~/.zshrc）
+# 4. Add to PATH (append to ~/.zshrc)
 echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zshrc
 export PATH="$HOME/bin:$PATH"
 
-# 5. 验证
+# 5. Verify
 lark-cli --version
 ```
 
-## 初始化配置（首次使用）
+## Initialize configuration (first-time setup)
 
 ```bash
 lark-cli config init
 ```
 
-交互式 TUI 引导你：
-1. 选择域名 → 选 **feishu.cn**（飞书中国版）
-2. 配置 App ID 和 App Secret（可跳过，使用个人账号登录时不需要）
+The interactive TUI will guide you to:
+1. Select a domain → choose **feishu.cn** (Feishu China)
+2. Configure App ID and App Secret (optional; not required for personal account login)
 
-## 一次性完整授权（推荐，避免后续频繁补权限）
+## One-time full authorization (recommended — avoids repeated permission prompts)
 
-默认 `--recommend` 不包含所有 scope，建议首次安装时用以下命令一次性授权全部所需权限：
+The default `--recommend` flag does not include all required scopes. Run the following command during initial setup to authorize all needed permissions at once:
 
 ```bash
-# Agent 模式：立即返回授权 URL，不阻塞
+# Agent mode: returns the authorization URL immediately without blocking
 lark-cli auth login --no-wait \
   --recommend \
   --scope "im:message.send_as_user search:message"
 ```
 
-执行后会输出一个 `verification_url`，在浏览器中打开完成飞书授权即可。
+After running, open the `verification_url` from the output in your browser to complete the Feishu OAuth flow.
 
-授权完成后执行（替换 device_code 为上一步输出的值）：
+Once authorized, run (replace `<device_code>` with the value printed above):
 ```bash
 lark-cli auth login --device-code <device_code>
 ```
 
-**已确认需要手动补充的 scope：**
-| Scope | 用途 |
-|-------|------|
-| `im:message.send_as_user` | 以用户身份发送消息（`--recommend` 未包含） |
-| `search:message` | 搜索消息（`--recommend` 未包含） |
+**Known scopes that must be added manually:**
+| Scope | Purpose |
+|-------|---------|
+| `im:message.send_as_user` | Send messages as user (not included in `--recommend`) |
+| `search:message` | Search messages (not included in `--recommend`) |
 
-## 普通登录认证
+## Standard login
 
 ```bash
-# Agent 模式（立即返回 URL，不阻塞等待）
+# Agent mode (returns URL immediately, does not block)
 lark-cli auth login --no-wait
 ```
 
-登录成功后会在浏览器打开飞书授权页面，确认后即可。
+Open the Feishu authorization page in your browser, confirm, and you're done.
 
-## 检查认证状态
+## Check authentication status
 
 ```bash
 lark-cli auth status
 ```
 
-## 多账号切换
+## Multi-account switching
 
 ```bash
-lark-cli auth login --alias work    # 登录并起别名
-lark-cli auth use work              # 切换到指定账号
-lark-cli auth logout                # 退出当前账号
+lark-cli auth login --alias work    # log in and assign an alias
+lark-cli auth use work              # switch to the specified account
+lark-cli auth logout                # log out of the current account
 ```
 
-## 常见安装问题
+## Common installation issues
 
-- **npx 命令不存在**：需先安装 Node.js（https://nodejs.org，下载 LTS 版）
-- **安装后找不到 lark-cli**：重新打开终端，或检查 `$PATH` 是否包含安装路径
-- **域名选错**：重新运行 `lark-cli config init --new` 重置配置
+- **lark-cli not found after install**: reopen the terminal, or verify `$PATH` includes the install directory
+- **Wrong domain selected**: re-run `lark-cli config init --new` to reset the configuration

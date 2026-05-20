@@ -1,135 +1,135 @@
-# 邮件（lark-cli mail）
+# Mail (lark-cli mail)
 
-## 查看邮件
+## View mail
 
 ```bash
-# 查看收件箱（最近邮件）
+# View inbox (recent messages)
 lark-cli mail +inbox --format table
 
-# 列出邮件文件夹
+# List mail folders
 lark-cli mail user_mailboxes list --format table
 
-# 列出收件箱邮件（page-all 获取全部）
+# List inbox messages (--page-all to get all)
 lark-cli mail user_mailbox_messages list \
   --user-mailbox-id "me" \
   --format table \
   --page-all
 
-# 读取邮件详情（需要 message_id）
+# Read a specific message (requires message_id)
 lark-cli mail user_mailbox_messages get \
   --user-mailbox-id "me" \
   --message-id "mail_xxx" \
   --format pretty
 ```
 
-## 搜索邮件
+## Search mail
 
 ```bash
-# 搜索邮件
+# Search by subject
 lark-cli mail user_mailbox_messages list \
   --user-mailbox-id "me" \
-  --params '{"subject": "会议纪要"}' \
+  --params '{"subject": "meeting notes"}' \
   --format table
 
-# 按发件人搜索
+# Search by sender
 lark-cli mail user_mailbox_messages list \
   --user-mailbox-id "me" \
-  --params '{"from": "zhangsan@company.com"}' \
+  --params '{"from": "alice@company.com"}' \
   --format table
 ```
 
-## 发送邮件
+## Send mail
 
 ```bash
-# 发送新邮件
+# Send a new email
 lark-cli mail user_mailbox_messages create \
   --user-mailbox-id "me" \
   --body '{
-    "subject": "Q2项目进展汇报",
-    "to": [{"mail_address": "manager@company.com", "name": "部门经理"}],
+    "subject": "Q2 Project Status Update",
+    "to": [{"mail_address": "manager@company.com", "name": "Manager"}],
     "cc": [{"mail_address": "team@company.com"}],
-    "body": {"content": "<h2>本周进展</h2><p>完成了需求文档的初稿...</p>", "content_type": "html"}
+    "body": {"content": "<h2>This Week</h2><p>Completed the initial draft of the requirements doc...</p>", "content_type": "html"}
   }'
 
-# 发送纯文本邮件
+# Send a plain text email
 lark-cli mail user_mailbox_messages create \
   --user-mailbox-id "me" \
   --body '{
-    "subject": "明天开会通知",
+    "subject": "Meeting Reminder for Tomorrow",
     "to": [{"mail_address": "colleague@company.com"}],
-    "body": {"content": "明天上午10点在A区301会议室开会，请准时参加。", "content_type": "plain_text"}
+    "body": {"content": "Meeting tomorrow at 10am in Room 301, Building A. Please be on time.", "content_type": "plain_text"}
   }'
 ```
 
-## 回复/转发邮件
+## Reply / forward mail
 
 ```bash
-# 回复邮件
+# Reply to a message
 lark-cli mail user_mailbox_messages reply \
   --user-mailbox-id "me" \
   --message-id "mail_xxx" \
   --body '{
-    "body": {"content": "收到，我会准时参加。", "content_type": "plain_text"}
+    "body": {"content": "Received, I will be there on time.", "content_type": "plain_text"}
   }'
 
-# 转发邮件
+# Forward a message
 lark-cli mail user_mailbox_messages forward \
   --user-mailbox-id "me" \
   --message-id "mail_xxx" \
   --body '{
     "to": [{"mail_address": "other@company.com"}],
-    "body": {"content": "转发给你参考", "content_type": "plain_text"}
+    "body": {"content": "Forwarding for your reference", "content_type": "plain_text"}
   }'
 ```
 
-## 草稿管理
+## Draft management
 
 ```bash
-# 创建草稿
+# Create a draft
 lark-cli mail user_mailbox_drafts create \
   --user-mailbox-id "me" \
   --body '{
-    "subject": "草稿标题",
+    "subject": "Draft Subject",
     "to": [{"mail_address": "recipient@company.com"}],
-    "body": {"content": "邮件内容...", "content_type": "plain_text"}
+    "body": {"content": "Email body...", "content_type": "plain_text"}
   }'
 
-# 发送草稿
+# Send a draft
 lark-cli mail user_mailbox_drafts send \
   --user-mailbox-id "me" \
   --draft-id "draft_xxx"
 ```
 
-## 带附件发邮件
+## Send mail with attachments
 
 ```bash
-# 先上传附件获取 attachment_token
+# Upload attachment first to get attachment_token
 lark-cli mail user_mailbox_message_attachments create \
   --user-mailbox-id "me" \
   --file "@/path/to/report.pdf" \
   --file-name "report.pdf"
 
-# 发送带附件的邮件
+# Send email with attachment
 lark-cli mail user_mailbox_messages create \
   --user-mailbox-id "me" \
   --body '{
-    "subject": "附报告",
+    "subject": "Report Attached",
     "to": [{"mail_address": "manager@company.com"}],
-    "body": {"content": "报告见附件", "content_type": "plain_text"},
+    "body": {"content": "Please see the attached report.", "content_type": "plain_text"},
     "attachments": [{"attachment_token": "attach_xxx"}]
   }'
 ```
 
-## 邮件标记
+## Mail flags
 
 ```bash
-# 标记为已读
+# Mark as read
 lark-cli mail user_mailbox_messages patch \
   --user-mailbox-id "me" \
   --message-id "mail_xxx" \
   --body '{"is_read": true}'
 
-# 加星标
+# Star a message
 lark-cli mail user_mailbox_messages patch \
   --user-mailbox-id "me" \
   --message-id "mail_xxx" \

@@ -1,105 +1,105 @@
-# 消息与群聊（lark-cli im）
+# Messaging & Group Chat (lark-cli im)
 
-## 查找用户/群组 ID（操作前必须有 ID）
+## Find user / group IDs (required before any messaging operation)
 
 ```bash
-# 按姓名或邮箱搜索用户
-lark-cli contact +search-user --query "张三"
+# Search for a user by name or email
+lark-cli contact +search-user --query "Zhang San"
 lark-cli contact +search-user --query "zhangsan@company.com"
 
-# 列出所有群组
+# List all groups
 lark-cli im +list-chats --format table
 
-# 搜索群组
-lark-cli im +search-chat --query "项目组"
+# Search for a group
+lark-cli im +search-chat --query "project team"
 ```
 
-## 发送消息
+## Send messages
 
-⚠️ **`+messages-send` 实际可用 flag**（不支持 `--receive-id-type`/`--receive-id`/`--format`）：
+⚠️ **Actual supported flags for `+messages-send`** (`--receive-id-type`, `--receive-id`, and `--format` are NOT supported):
 
 ```bash
-# 发文本消息给用户（--user-id 填 open_id，即 ou_ 开头的 ID）
+# Send a text message to a user (--user-id takes the open_id, starting with ou_)
 lark-cli im +messages-send \
   --user-id "ou_xxx" \
-  --text "你好，明天上午10点开会，请确认是否方便。"
+  --text "Hi, can you confirm if 10am tomorrow works for the meeting?"
 
-# 发消息到群组（--chat-id 填 oc_ 开头的群 ID）
+# Send a message to a group (--chat-id takes the group ID, starting with oc_)
 lark-cli im +messages-send \
   --chat-id "oc_xxx" \
-  --text "@所有人 明天10点项目周会，请准时参加"
+  --text "@all Weekly sync tomorrow at 10am — please be on time"
 
-# 发 Markdown 消息
+# Send a Markdown message
 lark-cli im +messages-send \
   --chat-id "oc_xxx" \
-  --markdown "**通知**\n\n请查看最新文档"
+  --markdown "**Notice**\n\nPlease review the latest document"
 ```
 
-⚠️ **跨租户限制**：若对方是飞书个人版用户（搜索结果显示"飞书个人版"），无法通过 `--user-id` 直接发起新会话，错误码 230038。
-解决方法：先找到已有的私聊 chat_id，用 `--chat-id` 发送：
+⚠️ **Cross-tenant limitation**: If the recipient is a Feishu Personal Edition user (search results show "Feishu Personal"), you cannot initiate a new conversation via `--user-id` — error code 230038.
+Workaround: find an existing P2P chat_id and use `--chat-id` instead:
 
 ```bash
-# 通过已有聊天记录找到 P2P chat_id
+# Find an existing P2P chat_id from chat history
 lark-cli im +chat-messages-list --user-id "ou_xxx" --format table
-# 从输出的 chat_id 字段获取，然后：
-lark-cli im +messages-send --chat-id "oc_已有私聊ID" --text "消息内容"
+# Get the chat_id from the output, then:
+lark-cli im +messages-send --chat-id "oc_existing_p2p_id" --text "message content"
 ```
 
-## 回复消息
+## Reply to a message
 
 ```bash
-# 回复某条消息（需要 message_id）
+# Reply to a message (requires message_id)
 lark-cli im messages reply --message-id "om_xxx" \
   --msg-type text \
-  --content '{"text":"收到，明天准时参加"}'
+  --content '{"text":"Got it, I will be there on time"}'
 ```
 
-## 查看消息历史
+## View message history
 
 ```bash
-# 查看某群最近消息
+# View recent messages in a group
 lark-cli im messages list --container-id-type chat \
   --container-id "oc_xxx" \
   --format pretty
 
-# 查看某用户与自己的私聊
+# View a P2P conversation
 lark-cli im +list-messages --chat-id "oc_xxx" --page-size 20
 ```
 
-## 群组管理
+## Group management
 
 ```bash
-# 创建群组
-lark-cli im chats create --name "Q2项目组" --description "Q2项目协作群"
+# Create a group
+lark-cli im chats create --name "Q2 Project Team" --description "Q2 project collaboration group"
 
-# 查看群成员
+# View group members
 lark-cli im chat_members get --chat-id "oc_xxx" --format table
 
-# 添加成员
+# Add a member
 lark-cli im chat_members create --chat-id "oc_xxx" \
   --body '{"id_list":["ou_xxx"],"member_id_type":"open_id"}'
 ```
 
-## 上传/分享文件
+## Upload / share files
 
 ```bash
-# 上传文件（获取 file_key 后可在消息中引用）
+# Upload a file (get file_key for use in messages)
 lark-cli im files create --file-type stream \
   --file-name "report.pdf" \
   --file "@/path/to/report.pdf"
 
-# 发送文件消息
+# Send a file message
 lark-cli im +messages-send --receive-id-type chat_id \
   --receive-id "oc_xxx" \
   --msg-type file \
   --content '{"file_key":"file_xxx"}'
 ```
 
-## 常用 ID 类型说明
+## Common ID types
 
-| ID 类型 | 说明 | 获取方式 |
-|--------|------|---------|
-| `open_id` | 用户在当前 App 下的唯一 ID | `contact +search-user` |
-| `user_id` | 用户在企业内的唯一 ID | `contact +search-user` |
-| `chat_id` | 群组 ID（oc_ 开头） | `im +list-chats` |
-| `message_id` | 消息 ID（om_ 开头） | 消息列表响应 |
+| ID type | Description | How to get |
+|---------|-------------|------------|
+| `open_id` | User's unique ID under the current app (starts with `ou_`) | `contact +search-user` |
+| `user_id` | User's unique ID within the organization | `contact +search-user` |
+| `chat_id` | Group ID (starts with `oc_`) | `im +list-chats` |
+| `message_id` | Message ID (starts with `om_`) | message list response |

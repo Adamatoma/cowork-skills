@@ -1,117 +1,117 @@
-# 多维表格与电子表格（lark-cli base / sheets）
+# Base & Spreadsheets (lark-cli base / sheets)
 
-## 多维表格（Base）
+## Base (Multidimensional Tables)
 
-### 基本操作
+### Basic operations
 
 ```bash
-# 列出所有多维表格（在云空间中）
+# List all Base files (in My Drive)
 lark-cli drive +list-files --format table
-# 找到 type=bitable 的文件，复制其 token
+# Look for files with type=bitable and copy their token
 
-# 列出多维表格中的所有数据表
+# List all tables in a Base app
 lark-cli base app_tables list --app-token "bascn_xxx" --format table
 
-# 列出数据表中的所有字段
+# List all fields in a table
 lark-cli base app_table_fields list \
   --app-token "bascn_xxx" \
   --table-id "tbl_xxx" \
   --format table
 
-# 列出所有视图
+# List all views
 lark-cli base app_table_views list \
   --app-token "bascn_xxx" \
   --table-id "tbl_xxx" \
   --format table
 ```
 
-### 查询记录
+### Query records
 
 ```bash
-# 获取所有记录
+# Get all records
 lark-cli base app_table_records list \
   --app-token "bascn_xxx" \
   --table-id "tbl_xxx" \
   --format pretty \
   --page-all
 
-# 按条件过滤记录（filter 语法）
+# Filter records by condition
 lark-cli base app_table_records list \
   --app-token "bascn_xxx" \
   --table-id "tbl_xxx" \
-  --params '{"filter": "CurrentValue.[状态] = \"进行中\""}'
+  --params '{"filter": "CurrentValue.[Status] = \"In Progress\""}'
 
-# 搜索记录
+# Search records
 lark-cli base app_table_records search \
   --app-token "bascn_xxx" \
   --table-id "tbl_xxx" \
-  --body '{"filter": {"conjunction": "and", "conditions": [{"field_name": "状态", "operator": "is", "value": ["进行中"]}]}}'
+  --body '{"filter": {"conjunction": "and", "conditions": [{"field_name": "Status", "operator": "is", "value": ["In Progress"]}]}}'
 ```
 
-### 创建/更新记录
+### Create / update records
 
 ```bash
-# 创建单条记录
+# Create a single record
 lark-cli base app_table_records create \
   --app-token "bascn_xxx" \
   --table-id "tbl_xxx" \
-  --body '{"fields": {"任务名称": "完成需求文档", "负责人": [{"id": "ou_xxx"}], "截止日期": "2024-01-15", "状态": "待处理"}}'
+  --body '{"fields": {"Task Name": "Complete requirements doc", "Assignee": [{"id": "ou_xxx"}], "Due Date": "2024-01-15", "Status": "Pending"}}'
 
-# 批量创建记录
+# Batch create records
 lark-cli base app_table_records batch_create \
   --app-token "bascn_xxx" \
   --table-id "tbl_xxx" \
-  --body '{"records": [{"fields": {"任务名称": "任务A"}}, {"fields": {"任务名称": "任务B"}}]}'
+  --body '{"records": [{"fields": {"Task Name": "Task A"}}, {"fields": {"Task Name": "Task B"}}]}'
 
-# 更新记录
+# Update a record
 lark-cli base app_table_records update \
   --app-token "bascn_xxx" \
   --table-id "tbl_xxx" \
   --record-id "recn_xxx" \
-  --body '{"fields": {"状态": "已完成"}}'
+  --body '{"fields": {"Status": "Done"}}'
 
-# 删除记录
+# Delete a record
 lark-cli base app_table_records delete \
   --app-token "bascn_xxx" \
   --table-id "tbl_xxx" \
   --record-id "recn_xxx"
 ```
 
-### 从 URL 提取 app_token
+### Extract app_token from URL
 
 ```
-URL: https://xxx.feishu.cn/base/AbCdEfGhIj → app_token = AbCdEfGhIj
+URL: https://xxx.feishu.cn/base/AbCdEfGhIj            → app_token = AbCdEfGhIj
 URL: https://xxx.feishu.cn/base/AbCdEfGh?table=tblXxx → app_token = AbCdEfGh, table-id = tblXxx
 ```
 
 ---
 
-## 电子表格（Sheets）
+## Spreadsheets (Sheets)
 
 ```bash
-# 读取工作表数据
+# Read sheet data
 lark-cli sheets spreadsheets_values get \
   --spreadsheet-token "shtcn_xxx" \
   --range "Sheet1!A1:D10" \
   --format pretty
 
-# 写入数据（追加到末尾）
+# Append data to the end
 lark-cli sheets spreadsheets_values append \
   --spreadsheet-token "shtcn_xxx" \
   --range "Sheet1!A1" \
-  --body '{"valueRange": {"range": "Sheet1!A1", "values": [["姓名", "部门", "入职日期"], ["张三", "研发", "2024-01-15"]]}}'
+  --body '{"valueRange": {"range": "Sheet1!A1", "values": [["Name", "Department", "Start Date"], ["Alice", "Engineering", "2024-01-15"]]}}'
 
-# 更新指定区域
+# Update a specific range
 lark-cli sheets spreadsheets_values update \
   --spreadsheet-token "shtcn_xxx" \
-  --body '{"valueRange": {"range": "Sheet1!A2:C2", "values": [["李四", "设计", "2024-01-16"]]}}'
+  --body '{"valueRange": {"range": "Sheet1!A2:C2", "values": [["Bob", "Design", "2024-01-16"]]}}'
 
-# 列出所有工作表
+# List all sheets
 lark-cli sheets spreadsheets_sheets query \
   --spreadsheet-token "shtcn_xxx" \
   --format table
 
-# 导出为 Excel/CSV
+# Export as Excel / CSV
 lark-cli sheets +export \
   --spreadsheet-token "shtcn_xxx" \
   --format xlsx \

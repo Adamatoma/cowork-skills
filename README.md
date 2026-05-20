@@ -55,6 +55,22 @@ Create stunning, animation-rich HTML presentations from scratch or by converting
 
 ---
 
+### [lark](./skills/lark/README.md)
+
+Operate Feishu (Lark) from the command line via the official lark-cli tool. Covers 7 business domains: messaging, documents, calendar, tasks, Base/multidimensional tables, mail, and meeting minutes. Includes a self-update protocol that automatically iterates verified CLI commands back into the skill across sessions.
+
+**Key Features:**
+- 7 domains covered — messaging, docs, calendar, tasks, Base/sheets, mail, meeting minutes
+- One-time full authorization — authorize all scopes upfront, no repeated browser prompts
+- Self-correcting — verified commands and discovered limitations are written back into the skill automatically
+- Cross-tenant limitation documented — includes workarounds for Feishu Personal Edition restrictions
+
+```
+/plugin install lark@cowork-skills
+```
+
+---
+
 ## Credits
 
 Inspired by the "Vibe Coding" philosophy — building beautiful things without being a traditional software engineer.

@@ -1,86 +1,86 @@
 ---
 name: lark
-description: 操作飞书（Feishu）的全能技能，基于官方 lark-cli 工具。当用户提到飞书相关操作时必须使用本技能，包括但不限于：发飞书消息、查飞书文档、看飞书日历、创建飞书任务、操作多维表格/Base、收发飞书邮件、获取会议纪要。关键词：飞书、lark、feishu、发消息、群聊、文档、日历、任务、多维表格、邮件、会议纪要。即使用户没有说"飞书"，但明显是在描述工作协作场景（如"发给张三说明天开会"、"把会议记录整理一下"），也应使用本技能。
+description: Skill for operating Feishu (Lark) via the official lark-cli tool. Use this skill whenever the user mentions anything Feishu/Lark-related, including but not limited to: sending messages, reading documents, checking calendar, creating tasks, working with Base/multidimensional tables, sending mail, or getting meeting minutes. Keywords: Feishu, Lark, feishu, lark, message, group chat, document, calendar, task, Base, mail, meeting minutes. Even if the user does not say "Feishu" explicitly but is clearly describing a work collaboration scenario (e.g. "send Zhang San a message about tomorrow's meeting", "summarize the meeting notes"), use this skill.
 ---
 
-# 飞书（Feishu）操作技能
+# Feishu (Lark) Operations Skill
 
-基于官方 [lark-cli](https://github.com/larksuite/cli) 工具，覆盖飞书 7 大业务域。
+Based on the official [lark-cli](https://github.com/larksuite/cli) tool, covering 7 Feishu business domains.
 
-## 第一步：检查环境
+## Step 1: Check environment
 
-**每次使用前先检查 lark-cli 是否已安装且完成认证：**
+**Before every use, verify lark-cli is installed and authenticated:**
 
 ```bash
 lark-cli auth status
 ```
 
-- 若命令不存在 → 参考 `references/setup.md` 引导安装
-- 若返回未登录 → 执行 `lark-cli auth login --recommend` 完成授权
-- 若返回已登录 → 直接执行任务
+- If command not found → see `references/setup.md` for installation guide
+- If not logged in → run `lark-cli auth login --recommend` to authorize
+- If already logged in → proceed with the task
 
-## 业务域速查
+## Domain quick-reference
 
-根据用户意图，选择对应参考文档：
+Pick the reference doc based on user intent:
 
-| 用户说的 | 读取文档 | 核心命令 |
-|---------|---------|---------|
-| 发消息、群聊、@人 | `references/messaging.md` | `lark-cli im` |
-| 文档、Wiki、云文件 | `references/docs.md` | `lark-cli docs` / `lark-cli wiki` |
-| 日历、会议、约人 | `references/calendar.md` | `lark-cli calendar` |
-| 任务、待办、提醒 | `references/tasks.md` | `lark-cli task` |
-| 多维表格、Base、表单 | `references/base.md` | `lark-cli base` / `lark-cli sheets` |
-| 邮件、收件箱 | `references/mail.md` | `lark-cli mail` |
-| 会议纪要、录音、摘要 | `references/meetings.md` | `lark-cli vc` / `lark-cli minutes` |
+| User asks about | Read | Core command |
+|----------------|------|-------------|
+| Messages, group chat, @mention | `references/messaging.md` | `lark-cli im` |
+| Documents, Wiki, cloud files | `references/docs.md` | `lark-cli docs` / `lark-cli wiki` |
+| Calendar, meetings, scheduling | `references/calendar.md` | `lark-cli calendar` |
+| Tasks, to-dos, reminders | `references/tasks.md` | `lark-cli task` |
+| Base, multidimensional tables, spreadsheets | `references/base.md` | `lark-cli base` / `lark-cli sheets` |
+| Mail, inbox | `references/mail.md` | `lark-cli mail` |
+| Meeting minutes, recordings, AI summaries | `references/meetings.md` | `lark-cli vc` / `lark-cli minutes` |
 
-## 通用命令约定
+## General command conventions
 
 ```bash
-# 输出格式（默认 JSON，人类可读用 pretty）
+# Output format (default JSON; use pretty or table for human-readable)
 lark-cli <domain> <command> --format pretty
 lark-cli <domain> <command> --format table
 
-# 自动翻页（列表类操作加上）
+# Auto-paginate (add for list operations)
 lark-cli <domain> <command> --page-all
 
-# 预览不执行
+# Dry run (preview without executing)
 lark-cli <domain> <command> --dry-run
 
-# 身份切换（默认用户身份，bot 需要 app 权限）
+# Identity (default is user; use bot for app-permission operations)
 lark-cli <domain> <command> --as user
 lark-cli <domain> <command> --as bot
 
-# 查看任意命令的参数结构
+# Inspect any command's parameter structure
 lark-cli schema <domain>.<command>
 ```
 
-## 常见问题
+## Common issues
 
-- **权限不足**：用 `lark-cli auth login --scope "<scope名>"` 补充授权
-- **找不到用户 ID**：用 `lark-cli contact +search-user --query "姓名或邮箱"` 查找
-- **找不到群组 ID**：用 `lark-cli im +chat-list` 列出所有群
-- **命令报错**：先用 `lark-cli <domain> <command> --help` 查看实际支持的 flag
+- **Insufficient permissions**: add scopes with `lark-cli auth login --scope "<scope-name>"`
+- **Can't find user ID**: search with `lark-cli contact +search-user --query "name or email"`
+- **Can't find group ID**: list all groups with `lark-cli im +chat-list`
+- **Command error**: check actual supported flags with `lark-cli <domain> <command> --help`
 
-## 自我更新协议（必须遵守）
+## Self-update protocol (mandatory)
 
-**每次会话中，只要出现以下任一情况，必须立即更新 skill 文件和 memory，不需要询问用户：**
+**Whenever any of the following occurs in a session, immediately update the skill files and memory — no need to ask the user:**
 
-### 触发条件
-1. 执行了一条 lark-cli 命令，报错后修正为另一条命令成功 → 将正确命令写入 references/
-2. 发现某个 flag 不存在、命令不存在、或行为与文档描述不符 → 标注 ❌ 并写入正确用法
-3. 遇到新的 `missing_scope` 错误并授权通过 → 将该 scope 追加到 setup.md 的缺口表
-4. 发现某个平台限制（如跨租户、权限边界）→ 写入对应 references/ 文件
+### Triggers
+1. A lark-cli command failed and a corrected command succeeded → write the correct command into references/
+2. A flag doesn't exist, a command doesn't exist, or behavior differs from documentation → mark ❌ and write correct usage
+3. A new `missing_scope` error is resolved by authorizing → append that scope to the gap table in setup.md
+4. A platform limitation is discovered (e.g. cross-tenant restriction, permission boundary) → write into the relevant references/ file
 
-### 更新方式
+### How to update
 
-**更新 references/ 文件**：直接 Edit 对应的 `.md` 文件，在相关命令旁标注 ✅（验证可用）或 ❌（不存在/报错），并写明正确用法。
+**Update references/ files**: Edit the relevant `.md` file directly, annotating commands with ✅ (verified working) or ❌ (missing/broken), and document correct usage.
 
-**更新 memory**：若当前会话有 project memory，将新发现追加到 lark skill 相关的 memory 条目中。
+**Update memory**: If a project memory exists in the current session, append new findings to the lark skill memory entry.
 
-### 更新格式
+### Update format
 ```markdown
-- ✅ `lark-cli im +messages-send --chat-id "oc_xxx" --text "内容"`  （验证可用）
-- ❌ `lark-cli im +messages-send --receive-id-type open_id ...`  （flag 不存在）
+- ✅ `lark-cli im +messages-send --chat-id "oc_xxx" --text "content"`  (verified working)
+- ❌ `lark-cli im +messages-send --receive-id-type open_id ...`  (flag does not exist)
 ```
 
-这个机制的目的是：让 skill 随着每次真实使用不断自我校正，跨会话积累正确路径，而不是每次都重新试错。
+The purpose of this protocol is to let the skill self-correct with each real-world use, accumulating correct paths across sessions instead of repeating the same mistakes.

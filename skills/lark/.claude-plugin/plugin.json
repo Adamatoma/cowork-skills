@@ -1,13 +1,13 @@
 {
-  "name": "lark",
+  "name": "cowork-skills",
   "version": "1.0.0",
   "description": "Operate Feishu (Lark) from the command line using the official lark-cli tool. Covers 7 business domains: messaging, documents, calendar, tasks, base/sheets, mail, and meeting minutes.",
   "author": {
-    "name": "panyutong",
-    "url": "https://github.com/panyutong"
+    "name": "Adamatoma",
+    "url": "https://github.com/Adamatoma"
   },
-  "homepage": "https://github.com/panyutong/frontend-slides",
-  "repository": "https://github.com/panyutong/frontend-slides",
+  "homepage": "https://github.com/Adamatoma/cowork-skills",
+  "repository": "https://github.com/Adamatoma/cowork-skills",
   "license": "MIT",
   "keywords": ["feishu", "lark", "im", "calendar", "docs", "task", "base", "mail", "minutes", "lark-cli"],
   "skills": ["./skills/lark"]
