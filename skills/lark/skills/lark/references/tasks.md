@@ -20,32 +20,29 @@ lark-cli task tasklists list --format table
 
 ## Create a task
 
+✅ Use `+create` shortcut — simpler flags, always creates under user identity.
+❌ `task tasks create --data` may use bot identity and the task won't appear in "My Tasks".
+
 ```bash
-# Create a simple task
-lark-cli task tasks create \
-  --body '{
-    "summary": "Complete Q2 requirements document",
-    "description": "Initial draft due by end of this Friday",
-    "due": {"timestamp": "1700100000"}
-  }'
+# ✅ Recommended: use +create shortcut
+lark-cli task +create --summary "Task title" --as user
 
-# Create a task and assign it to someone
-lark-cli task tasks create \
-  --body '{
-    "summary": "Review design mockups",
-    "due": {"timestamp": "1700100000"},
-    "members": [
-      {"id": "ou_xxx", "type": "user", "role": "assignee"}
-    ]
-  }'
+# With due date and assignee
+lark-cli task +create \
+  --summary "Task title" \
+  --description "Details here" \
+  --due "2024-01-15" \
+  --assignee "ou_xxx" \
+  --as user
 
-# Create a task and add it to a specific task list
-lark-cli task tasks create \
-  --body '{
-    "summary": "New task",
-    "tasklists": [{"tasklist_guid": "tl_xxx", "section_guid": "sec_xxx"}]
-  }'
+# Add to a specific task list
+lark-cli task +create \
+  --summary "Task title" \
+  --tasklist-id "tl_xxx" \
+  --as user
 ```
+
+Note: tasks created via API with no tasklist appear in Feishu under "My Tasks → All" — not in any task list view.
 
 ## Update task status
 

@@ -15,7 +15,10 @@ tar -xzf /tmp/lark-cli.tar.gz -C /tmp/
 # 3. Install to user directory (no sudo required)
 mkdir -p ~/bin && cp /tmp/lark-cli ~/bin/lark-cli && chmod +x ~/bin/lark-cli
 
-# 4. Add to PATH (append to ~/.zshrc)
+# 4. Add to PATH
+# ⚠️ Claude Code runs non-interactive bash and does NOT source ~/.zshrc.
+# Must add to ~/.bash_profile (or ~/.zprofile) so it works in all shells:
+echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bash_profile
 echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zshrc
 export PATH="$HOME/bin:$PATH"
 
