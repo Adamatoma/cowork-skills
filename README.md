@@ -71,6 +71,23 @@ Operate Feishu (Lark) from the command line via the official lark-cli tool. Cove
 
 ---
 
+### [large-scale-refactor](./skills/large-scale-refactor/README.md)
+
+Multi-session memory protocol for medium/large refactors and brownfield development. Activates the **Structured Memory + Routed Context** framework: a small durable memory layer (layered readme + continuation + devlog) the model rebuilds from at every session start, plus a working-set routing rule that classifies every file as Required / Optional / Exclude (必需 / 可选 / 不应给) before loading.
+
+**Key Features:**
+- Two-layer memory — architecture (readme) and continuation (continuation.md), with strict role separation
+- Phase 0 session-start protocol — restore state from the map *before* touching any code
+- Iteration loop with mandatory sync — every batch ends by updating readme + continuation + devlog, no silent drift
+- Routed working set — Required / Optional / Exclude classification keeps context focused and surfaces gaps loudly
+- Pairs with `coding-basic-rules` — this skill governs what to load and record; the other governs how to edit code
+
+```
+/plugin install large-scale-refactor@cowork-skills
+```
+
+---
+
 ## Credits
 
 Inspired by the "Vibe Coding" philosophy — building beautiful things without being a traditional software engineer.

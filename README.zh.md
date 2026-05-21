@@ -71,6 +71,23 @@
 
 ---
 
+### [large-scale-refactor](./skills/large-scale-refactor/README.zh.md)
+
+中大型重构与棕地项目的跨会话记忆协议。激活 **结构化记忆 + 路由上下文（Structured Memory + Routed Context）** 框架：用一个小而持久的记忆层（分层 readme + continuation + devlog）让模型在每次会话开始时重建状态，外加一条 working set 路由规则，每个文件先分类为 必需 / 可选 / 不应给 再加载。
+
+**核心能力：**
+- 两层记忆 — 架构层（readme）与续接层（continuation.md）职责严格分离
+- Phase 0 会话启动协议 — 先从地图还原状态，再动任何代码
+- 迭代循环强制同步 — 每个批次以更新 readme + continuation + devlog 结束，杜绝静默漂移
+- 路由式 working set — 必需 / 可选 / 不应给 三类分类，让上下文保持聚焦，缺失时明确暴露
+- 与 `coding-basic-rules` 配套使用 — 本 skill 管"加载与记录什么"，对方管"代码该怎么改"
+
+```
+/plugin install large-scale-refactor@cowork-skills
+```
+
+---
+
 ## 致谢
 
 灵感来自「Vibe Coding」理念 —— 无需成为传统软件工程师，也能构建出美好的东西。

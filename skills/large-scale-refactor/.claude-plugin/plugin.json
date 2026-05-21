@@ -1,0 +1,14 @@
+{
+  "name": "cowork-skills",
+  "version": "1.0.0",
+  "description": "Protocol for AI-assisted refactoring of medium/large codebases across multiple sessions. Activates the Structured Memory + Routed Context framework so Claude Code restores architectural context from a small durable memory layer (readme + continuation + devlog) at the start of every session, instead of rereading the whole repo or losing the thread between conversations.",
+  "author": {
+    "name": "Adamatoma",
+    "url": "https://github.com/Adamatoma"
+  },
+  "homepage": "https://github.com/Adamatoma/cowork-skills",
+  "repository": "https://github.com/Adamatoma/cowork-skills",
+  "license": "MIT",
+  "keywords": ["refactor", "large-codebase", "brownfield", "multi-session", "memory-layer", "continuation"],
+  "skills": ["./skills/large-scale-refactor"]
+}
