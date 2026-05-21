@@ -30,11 +30,33 @@ lark-cli docs +fetch --doc "AbCdEfGh" --api-version v2 --format pretty
 ## Update a document
 
 ```bash
-# Append content to the end of a document
-lark-cli docs +patch \
-  --document-id "AbCdEfGh" \
-  --content $'\n## New Section\nContent here...'
+# ✅ Correct v2 syntax: append content to the end of a document
+# --content supports @file (relative path only, must be within cwd)
+lark-cli docs +update \
+  --doc "AbCdEfGh" \
+  --api-version v2 \
+  --command append \
+  --doc-format markdown \
+  --content @relative_file.md
+
+# Inline content (use stdin via -)
+echo "## New Section\nContent here..." | lark-cli docs +update \
+  --doc "AbCdEfGh" \
+  --api-version v2 \
+  --command append \
+  --doc-format markdown \
+  --content -
+
+# Overwrite entire document
+lark-cli docs +update \
+  --doc "AbCdEfGh" \
+  --api-version v2 \
+  --command overwrite \
+  --doc-format markdown \
+  --content @relative_file.md
 ```
+
+⚠️ v2 uses `--command` (not `--mode`); `--content @file` requires a relative path within cwd (not /tmp or absolute paths); `+patch` does not exist.
 
 ## Search documents
 
